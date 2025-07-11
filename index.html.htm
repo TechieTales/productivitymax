@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UPSC Productivity Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+    body {
+      background: linear-gradient(135deg, #ffeb3b, #fff59d);
+      color: #212121;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      margin-bottom: 1rem;
+    }
+    p.description {
+      font-size: 1.2rem;
+      color: #616161;
+      margin-bottom: 3rem;
+    }
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      width: 100%;
+      max-width: 1000px;
+    }
+    .card {
+      background: #fffde7;
+      border-radius: 1rem;
+      padding: 2rem;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
+    }
+    .card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+    }
+    .card h2 {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+      color: #f57f17;
+    }
+    .card p {
+      color: #555;
+      font-size: 1rem;
+    }
+    footer {
+      margin-top: 3rem;
+      font-size: 0.9rem;
+      color: #757575;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <h1>📘 Your Productivity Hub</h1>
+  <p class="description">Plan smart. Work focused. Track everything — from one dashboard.</p>
+
+  <div class="card-grid">
+    <div class="card" onclick="window.location.href='goal-tracker.html'">
+      <h2>🎯 Goal Tracker</h2>
+      <p>Create, check, and reset your daily goals easily.</p>
+    </div>
+    <div class="card" onclick="window.location.href='pomodoro.html'">
+      <h2>⏱️ Pomodoro Timer</h2>
+      <p>Choose your session, track time, and level up your focus.</p>
+    </div>
+  </div>
+
+  <footer>
+    <p>Built with ❤️ for you| You deserve powerful tools.</p>
+  </footer>
+</body>
+</html>

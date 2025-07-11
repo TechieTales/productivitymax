@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Pomodoro Supreme</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #FF9933;
+      color: #fff;
+      padding: 30px;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 2.8em;
+      margin-bottom: 10px;
+      text-shadow: 1px 1px #000;
+    }
+
+    .section {
+      background-color: #ffffff10;
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.3);
+      max-width: 700px;
+      margin: auto;
+    }
+
+    label, select, input {
+      font-size: 1em;
+      margin: 10px;
+      padding: 8px;
+      border-radius: 5px;
+      border: none;
+    }
+
+    button {
+      padding: 10px 20px;
+      margin: 5px;
+      border: none;
+      border-radius: 5px;
+      background-color: #fff;
+      color: #FF9933;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #ffe0b3;
+    }
+
+    #timer {
+      font-size: 3em;
+      margin: 20px 0;
+      font-weight: bold;
+    }
+
+    .xp-display {
+      font-size: 1.2em;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>🔥 Pomodoro Supreme</h1>
+
+  <div class="section">
+    <label for="preset">Choose Pomodoro Slot:</label>
+    <select id="preset">
+      <option value="25-5">25 min work / 5 min break</option>
+      <option value="50-10">50 min work / 10 min break</option>
+      <option value="90-20">90 min deep work / 20 min break</option>
+      <option value="custom">Custom</option>
+    </select>
+
+    <div id="customInputs" style="display: none;">
+      <input type="number" id="customWork" placeholder="Work minutes" min="1">
+      <input type="number" id="customBreak" placeholder="Break minutes" min="1">
+    </div>
+
+    <div id="slotDisplay">Work: 25 min | Break: 5 min</div>
+    <div id="timer">25:00</div>
+    <button onclick="startTimer()">Start</button>
+    <button onclick="pauseTimer()">Pause</button>
+    <button onclick="resetTimer()">Reset</button>
+
+    <div class="xp-display" id="xpInfo">XP: 0 | Pomodoros Done: 0 | Level: Seed Starter 🌱</div>
+    <div id="nextLevelInfo">Next level in 6 XP (2 Pomodoros)</div>
+  </div>
+
+  <script>
+    let workTime = 25, breakTime = 5;
+    let isBreak = false, isRunning = false, timer;
+    let secondsRemaining = workTime * 60;
+    let xp = 0, pomodorosDone = 0;
+
+    const levels = [
+      'Seed Starter 🌱', 'Focus Farmer 🌾', 'Mind Warrior 🧠', 'Zen Master 🔮',
+      'Time Bender ⌛', 'Flow Lord 🚀', 'Distraction Slayer ⚔️',
+      'Energy Alchemist 💎', 'Productivity Phoenix 🔥', 'Momentum Maverick 🌀',
+      'Hyper Monk 🧘', 'Supreme Architect 🏛️'
+    ];
+
+    document.getElementById('preset').addEventListener('change', function () {
+      if (this.value === 'custom') {
+        document.getElementById('customInputs').style.display = 'block';
+      } else {
+        document.getElementById('customInputs').style.display = 'none';
+        const [w, b] = this.value.split('-');
+        workTime = parseInt(w);
+        breakTime = parseInt(b);
+        isBreak = false;
+        updateSlotDisplay();
+        resetTimer();
+      }
+    });
+
+    function updateSlotDisplay() {
+      document.getElementById('slotDisplay').textContent =
+        `Work: ${workTime} min | Break: ${breakTime} min`;
+    }
+
+    function startTimer() {
+      if (isRunning) return;
+
+      if (document.getElementById('preset').value === 'custom') {
+        let cw = parseInt(document.getElementById('customWork').value);
+        let cb = parseInt(document.getElementById('customBreak').value);
+        if (cw > 0 && cb > 0) {
+          workTime = cw;
+          breakTime = cb;
+          updateSlotDisplay();
+          resetTimer();
+        }
+      }
+
+      isRunning = true;
+      timer = setInterval(() => {
+        secondsRemaining--;
+        updateDisplay();
+
+        if (secondsRemaining <= 0) {
+          clearInterval(timer);
+          isRunning = false;
+
+          if (!isBreak) {
+            pomodorosDone++;
+            xp += 3;
+            updateXPDisplay();
+            isBreak = true;
+            alert("Pomodoro complete! Starting break 🎉");
+            secondsRemaining = breakTime * 60;
+            startTimer();
+          } else {
+            isBreak = false;
+            alert("Break finished! Time to focus 🔥");
+            secondsRemaining = workTime * 60;
+          }
+        }
+      }, 1000);
+    }
+
+    function pauseTimer() {
+      clearInterval(timer);
+      isRunning = false;
+    }
+
+    function resetTimer() {
+      clearInterval(timer);
+      isRunning = false;
+      secondsRemaining = (isBreak ? breakTime : workTime) * 60;
+      updateDisplay();
+    }
+
+    function updateDisplay() {
+      let m = Math.floor(secondsRemaining / 60);
+      let s = secondsRemaining % 60;
+      document.getElementById('timer').textContent =
+        `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+    }
+
+    function updateXPDisplay() {
+      let levelIndex = Math.floor(pomodorosDone / 2);
+      let currentLevel = levels[Math.min(levelIndex, levels.length - 1)];
+      let nextLevelXp = (levelIndex + 1) * 6;
+      let xpNeeded = nextLevelXp - xp;
+
+      document.getElementById('xpInfo').textContent =
+        `XP: ${xp} | Pomodoros Done: ${pomodorosDone} | Level: ${currentLevel}`;
+
+      if (levelIndex + 1 < levels.length) {
+        document.getElementById('nextLevelInfo').textContent =
+          `Next level in ${xpNeeded} XP (${Math.ceil(xpNeeded / 3)} Pomodoros)`;
+      } else {
+        document.getElementById('nextLevelInfo').textContent =
+          `🔥 You’ve reached Supreme Architect! Productivity unlocked 🔓`;
+      }
+    }
+
+    updateSlotDisplay();
+    updateDisplay();
+    updateXPDisplay();
+  </script>
+</body>
+</html>

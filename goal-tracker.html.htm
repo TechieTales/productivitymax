@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Goal Tracker</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #6A0DAD;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 30px;
+    }
+
+    h1 {
+      font-size: 2.5em;
+      margin-bottom: 10px;
+    }
+
+    .tracker-container {
+      background-color: #ffffff11;
+      border-radius: 10px;
+      padding: 20px;
+      width: 100%;
+      max-width: 500px;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+    }
+
+    input[type="text"] {
+      width: 70%;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      margin-bottom: 10px;
+    }
+
+    button {
+      padding: 10px 15px;
+      margin: 5px;
+      border: none;
+      border-radius: 5px;
+      background-color: #fff;
+      color: #6A0DAD;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #e0c7ff;
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    li {
+      margin: 10px 0;
+      background-color: #ffffff22;
+      padding: 10px;
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .checkbox {
+      margin-right: 15px;
+    }
+
+    .goal-text {
+      flex: 1;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎯 Your Goal Tracker</h1>
+  <div class="tracker-container">
+    <input type="text" id="goalInput" placeholder="Enter your goal here..." />
+    <button onclick="addGoal()">Add Goal</button>
+    <button onclick="resetGoals()">Reset All Goals</button>
+    <ul id="goalList"></ul>
+  </div>
+
+  <script>
+    function addGoal() {
+      const input = document.getElementById('goalInput');
+      const goalText = input.value.trim();
+      if (goalText === '') return;
+
+      const listItem = document.createElement('li');
+
+      const checkbox = document.createElement('input');
+      checkbox.type = 'checkbox';
+      checkbox.className = 'checkbox';
+
+      const span = document.createElement('span');
+      span.className = 'goal-text';
+      span.textContent = goalText;
+
+      listItem.appendChild(checkbox);
+      listItem.appendChild(span);
+      document.getElementById('goalList').appendChild(listItem);
+
+      input.value = '';
+    }
+
+    function resetGoals() {
+      document.getElementById('goalList').innerHTML = '';
+    }
+  </script>
+</body>
+</html>
